@@ -4,7 +4,6 @@ const path = require('path');
 const fs = require('fs');
 
 //Config.AUDIO_OUTPUT can be local, hdmi or alsa:hw:1,0 (for usb) 
-//Config.STARTUP_MESSAGE  can be "loop" or a file index, from 1 to nb medias, default to 0 to do nothing.
 
 var Playlist = [];
 
@@ -39,6 +38,11 @@ fs.readdirSync(directoryPath).forEach(function (file)
     Playlist.push(file);
 });
 
+if(Config.AUTOPLAY == true)
+{
+	StartAutoplay();
+}
+
 var udp = new osc.UDPPort(
 {
     localAddress: "0.0.0.0",
@@ -58,33 +62,6 @@ var SendAcknowledge = function (fileId)
         address: Config.OSC_MESSAGE,
         args: [Config.ID, fileId]
     });
-}
-
-var ExecuteNextAction = function(action)
-{
-	if(action == "loop")
-	{
-		Log("ExecuteNextAction loop");
-		StartAutoplay();
-		SendAcknowledge(action);
-	}
-	else
-	{	
-		var fileIndex = parseInt(action) - 1;
-
-		if(fileIndex < Playlist.length)
-		{
-			Log("ExecuteNextAction play: " + fileIndex);
-			omx.play(Playlist[fileIndex], {loop: true, audioOutput: Config.AUDIO_OUTPUT});
-			SendAcknowledge(action);
-		}
-	}
-}
-
-//Startup action
-if(Config.STARTUP_MESSAGE != 0)
-{
-	ExecuteNextAction(Config.STARTUP_MESSAGE);
 }
 
 var ProcessMessage = function(oscMsg)
@@ -142,6 +119,27 @@ var ProcessMessage = function(oscMsg)
 				omx.play(Playlist[fileIndex], {loop: true, audioOutput: Config.AUDIO_OUTPUT});
 				SendAcknowledge(oscMsg.args[0]);
 			}
+		}
+	}
+}
+
+var ExecuteNextAction = function(action)
+{
+	if(action == "loop")
+	{
+		Log("ExecuteNextAction loop");
+		StartAutoplay();
+		SendAcknowledge(action);
+	}
+	else
+	{	
+		var fileIndex = parseInt(action) - 1;
+
+		if(fileIndex < Playlist.length)
+		{
+			Log("ExecuteNextAction play: " + fileIndex);
+			omx.play(Playlist[fileIndex], {loop: true, audioOutput: Config.AUDIO_OUTPUT});
+			SendAcknowledge(action);
 		}
 	}
 }
