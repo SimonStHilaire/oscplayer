@@ -1,7 +1,7 @@
 {
  "ID": 66,
  "OSC_MESSAGE": "/MPOP/prison",
- "AUTOPLAY": true,
+ "STARTUP_MESSAGE": "loop",
  "MEDIAS_FOLDER": "Medias/",
  "AUDIO_OUTPUT": "alsa:hw:1,0",
  "LOGS": false

@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 //Config.AUDIO_OUTPUT can be local, hdmi or alsa:hw:1,0 (for usb) 
+//Config.STARTUP_MESSAGE  can be "loop" or a file index, from 1 to nb medias, default to 0 to do nothing.
 
 var Playlist = [];
 
@@ -38,9 +39,9 @@ fs.readdirSync(directoryPath).forEach(function (file)
     Playlist.push(file);
 });
 
-if(Config.AUTOPLAY == true)
+if(Config.STARTUP_MESSAGE != 0)
 {
-	StartAutoplay();
+	ExecuteNextAction(Config.STARTUP_MESSAGE);
 }
 
 var udp = new osc.UDPPort(
