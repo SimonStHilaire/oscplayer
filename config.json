@@ -1,0 +1,8 @@
+{
+ "ID": 66,
+ "OSC_MESSAGE": "/MPOP/prison",
+ "AUTOPLAY": true,
+ "MEDIAS_FOLDER": "Medias/",
+ "AUDIO_OUTPUT": "alsa:hw:1,0",
+ "LOGS": false
+}
