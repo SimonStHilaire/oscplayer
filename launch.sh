@@ -1,7 +1,7 @@
 # !/bin/bash
 unclutter -idle 2 &
 
-cd /home/pi/MPOPPlayer
+cd /home/pi/oscplayer
 node . &
 
 
