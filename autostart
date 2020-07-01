@@ -5,4 +5,4 @@
 @xset s off
 @xset -dpms
 
-@sh /home/pi/MPOPPlayer/launch.sh
+@lxterminal -e /home/pi/launch.sh
