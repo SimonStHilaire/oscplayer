@@ -1,7 +1,43 @@
-var omx = require('omxdirector');//.enableNativeLoop();
+var omx = require('omxdirector');//.enableNativeLoop();//Only works with 1 file
 var osc = require("osc");
 const path = require('path');
 const fs = require('fs');
+
+var LastPlay = Date.now();
+
+const readline = require('readline');
+readline.emitKeypressEvents(process.stdin);
+
+process.stdin.setRawMode(true);
+
+process.stdin.on('keypress', (str, key) => 
+{
+  if(key.name == 'c' && key.ctrl)
+  {
+    omx.stop();
+    process.exit();
+  }
+  else if(str == 's')
+  {
+	  omx.stop();
+  }
+  else if(str == 'p')
+  {
+	  StartAutoplay();
+  }
+  else if(str == 'f')
+  {
+	  omx.forwards();
+  }
+  else if(str == 'u')
+  {
+	  omx.volup();
+  }
+  else if(str == 'd')
+  {
+	  omx.voldown();
+  }
+});
 
 //Config.AUDIO_OUTPUT can be local, hdmi or alsa:hw:1,0 (for usb) 
 
@@ -107,6 +143,16 @@ var ProcessMessage = function(oscMsg)
 		
 		if(fileIndex < Playlist.length)
 		{
+                        var diff = Date.now() - LastPlay;
+
+			if(diff < Config.PLAY_DELAY)
+			{
+				Log("Another play was sent too quickly");
+				return;
+			}
+
+			LastPlay = Date.now();
+
 			if(omx.getStatus().loaded == true)
 			{
 				Log("Play: " + fileIndex);
