@@ -139,7 +139,7 @@ var ProcessMessage = function(oscMsg)
 	}
 	else if(fileIndex >= 1)
 	{
-		var fileIndex = parseInt(fileIndex);
+		var fileIndex = parseInt(fileIndex) - 1;
 		
 		if(fileIndex < Playlist.length)
 		{
