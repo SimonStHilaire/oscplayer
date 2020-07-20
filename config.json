@@ -3,6 +3,8 @@
  "OSC_MESSAGE": "/MPOP/prison",
  "AUTOPLAY": true,
  "MEDIAS_FOLDER": "Medias/",
-  "AUDIO_OUTPUT": "local", 
-"LOGS": false
+ "AUDIO_OUTPUT": "local", 
+ "LOGS": false,
+ "PLAY_DELAY": 1500,
+ "LOGS": false
 }

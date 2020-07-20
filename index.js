@@ -3,6 +3,8 @@ var osc = require("osc");
 const path = require('path');
 const fs = require('fs');
 
+var LastPlay = Date.now();
+
 const readline = require('readline');
 readline.emitKeypressEvents(process.stdin);
 
@@ -141,6 +143,16 @@ var ProcessMessage = function(oscMsg)
 		
 		if(fileIndex < Playlist.length)
 		{
+                        var diff = Date.now() - LastPlay;
+
+			if(diff < Config.PLAY_DELAY)
+			{
+				Log("Another play was sent too quickly");
+				return;
+			}
+
+			LastPlay = Date.now();
+
 			if(omx.getStatus().loaded == true)
 			{
 				Log("Play: " + fileIndex);
